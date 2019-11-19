@@ -19,10 +19,15 @@ private:
 	// animation
 	int spotter_sprite_switch = 1;
 	float spotter_sprite_countdown = 1500.f;
+	const float spriteWidth = 68.f;
+	const float spriteHeight = 67.f;
+	int frameIndex_x = 1;
+	int frameIndex_y = 1;
 
 	// AI stuff
 	float check_sgn(float value);
-	float radius = 70.f;
+	float radius = 50.f;
+
 
 public:
 	bool init();

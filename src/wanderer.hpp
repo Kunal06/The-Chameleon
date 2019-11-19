@@ -43,6 +43,10 @@ private:
 	int sprite_switch = 1;
 	float sprite_countdown = 200.f;
 	int flip_in_x = 1;
+	const float spriteWidth = 35.f;
+	const float spriteHeight = 58.f;
+	int frameIndex_x = 3;
+	int frameIndex_y = 1;
 
 	// Pathing AI
 	Map* m_map;
@@ -63,6 +67,9 @@ private:
 	std::vector<path_construction> find_paths_from(path_construction origin, vec2 goal);
 	std::vector<path_construction> merge_in_order(std::vector<path_construction> p1, std::vector<path_construction> p2);
 	bool tile_is_accessible(vec2 origin, int x_delta, int y_delta);
+
+	// anim
+	void reinitiliaze();
 
 public:
 	bool init(std::vector<vec2> path, Map& map, Char& player);

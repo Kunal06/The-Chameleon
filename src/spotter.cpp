@@ -14,7 +14,7 @@ bool Spotter::init()
 	// load shared texture
 	if (!spotter_texture.is_valid())
 	{
-		if (!spotter_texture.load_from_file(textures_path("spotters/1.png")))
+		if (!spotter_texture.load_from_file(textures_path("spotters/spotter.png")))
 		{
 			fprintf(stderr, "Failed to load spotter texture!");
 			return false;
@@ -22,19 +22,28 @@ bool Spotter::init()
 	}
 
 	direction = vec2({ 0.f, -1.f });
-	// the position corresponds to the center of the texture
-	float wr = spotter_texture.width * 0.5f;
-	float hr = spotter_texture.height * 0.5f;
+
+	// sprite sheet calculations
+	const float tw = spriteWidth / spotter_texture.width;
+	const float th = spriteHeight / spotter_texture.height;
+	const int numPerRow = spotter_texture.width / spriteWidth;
+	const int numPerCol = spotter_texture.height / spriteHeight;
+	const float tx = (frameIndex_x % numPerRow - 1) * tw;
+	const float ty = (frameIndex_y / numPerCol) * th;
+
+	float posX = 0.f;
+	float posY = 0.f;
 
 	TexturedVertex vertices[4];
-	vertices[0].position = { -wr, +hr, -0.0f };
-	vertices[0].texcoord = { 0.f, 1.f };
-	vertices[1].position = { +wr, +hr, -0.0f };
-	vertices[1].texcoord = { 1.f, 1.f };
-	vertices[2].position = { +wr, -hr, -0.0f };
-	vertices[2].texcoord = { 1.f, 0.f };
-	vertices[3].position = { -wr, -hr, -0.0f };
-	vertices[3].texcoord =  {0.f, 0.f };
+	vertices[0].position = { posX, posY, -0.0f };
+	vertices[0].texcoord = { tx, ty };
+	vertices[1].position = { posX + spriteWidth, posY, -0.0f };
+	vertices[1].texcoord = { tx + tw, ty };
+	vertices[2].position = { posX + spriteWidth, posY + spriteHeight, -0.0f };
+	vertices[2].texcoord = { tx + tw, ty + th };
+	vertices[3].position = { posX, posY + spriteHeight, -0.0f };
+	vertices[3].texcoord =  {tx, ty + th };
+
 
 	// counterclockwise as it's the default opengl front winding direction
 	uint16_t indices[] = { 0, 3, 1, 1, 3, 2 };
@@ -82,9 +91,21 @@ void Spotter::destroy()
 void Spotter::update(float ms)
 {
 	if (spotter_sprite_countdown > 0.f)
-		spotter_sprite_countdown -= ms/2;
+		spotter_sprite_countdown -= ms;
 
-	spotter_sprite_switch >= 3 ? spotter_sprite_switch = 1 : spotter_sprite_switch++;
+	/*frameIndex >= 3 ? frameIndex = 1 : frameIndex++;*/
+
+	if (frameIndex_x == 1) {
+		frameIndex_x = 2;
+	}
+	else if (frameIndex_x == 2) {
+		frameIndex_x = 9;
+		frameIndex_y = 0;
+	}
+	else if (frameIndex_x == 9) {
+		frameIndex_x = 1;
+		frameIndex_y = 1;
+	}
 }
 
 void Spotter::draw(const mat3 &projection)
@@ -137,13 +158,11 @@ void Spotter::draw(const mat3 &projection)
 	vec2 directions[3] =  {{0.f, -1.f}, {1.f, 0.f}, {-1.f, 0.f} };
 	// sprite change
 	if (spotter_sprite_countdown < 0) {
-		string temp_str = "data/textures/spotters/" + to_string(spotter_sprite_switch) + ".png";
-		string s(PROJECT_SOURCE_DIR);
-		s += temp_str;
-		const char* path = s.c_str();
 
-		spotter_texture.~Texture();
-		spotter_texture.load_from_file(path);
+		//spotter_texture.~Texture();
+		//spotter_texture.load_from_file(path);
+
+		init();
 		direction = directions[spotter_sprite_switch - 1];
 		spotter_sprite_countdown = 1500.f;
 	}
@@ -166,7 +185,8 @@ vec2 Spotter::get_position() const
 // collision
 vec2 Spotter::get_bounding_box() const
 {
-	return { std::fabs(physics.scale.x) * spotter_texture.width * 0.5f, std::fabs(physics.scale.y) * spotter_texture.height * 0.5f };
+	// adjusted to fit sprite sheet changes
+	return { std::fabs(physics.scale.x) * spotter_texture.width * 0.5f * 0.125f, std::fabs(physics.scale.y) * spotter_texture.height * 0.5f * 0.14285714285f };
 }
 
 bool Spotter::collision_with(Char m_char)
