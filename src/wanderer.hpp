@@ -39,14 +39,15 @@ private:
 	// direction
 	vec2 direction = { 1, 0 };
 
+
 	// animation
 	int sprite_switch = 1;
 	float sprite_countdown = 200.f;
 	int flip_in_x = 1;
-	const float spriteWidth = 35.f;
-	const float spriteHeight = 58.f;
-	int frameIndex_x = 3;
-	int frameIndex_y = 1;
+	const float spriteWidth = 45.f;
+	const float spriteHeight = 68.f;
+	int frameIndex_x = 0;
+	int frameIndex_y = 11;
 
 	// Pathing AI
 	Map* m_map;

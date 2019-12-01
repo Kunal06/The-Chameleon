@@ -21,7 +21,7 @@ class Char : public Entity
 
 private:
 	// config
-	const float config_scale = 0.02f;
+	const float config_scale = 0.2f;
 
 	bool m_is_alive;
 
@@ -44,10 +44,18 @@ private:
 	bool m_dash;
 	int m_direction_change;
 
-	// ANIMATION
-	int sprite_switch = 1;
-	float sprite_countdown = 200.f;
+	
 	int flip_in_x = 1;
+
+	// animation
+	int sprite_switch = 1;
+	float sprite_countdown = 1500.f;
+	const float spriteWidth = 31.f;
+	const float spriteHeight = 67.f;
+	int frameIndex_x = 1;
+	int frameIndex_y = 1;
+	void reinitialize();
+
 
 public:
 	bool init(vec2 pos);

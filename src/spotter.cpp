@@ -99,12 +99,24 @@ void Spotter::update(float ms)
 		frameIndex_x = 2;
 	}
 	else if (frameIndex_x == 2) {
-		frameIndex_x = 9;
+		frameIndex_x = 7;
 		frameIndex_y = 0;
 	}
-	else if (frameIndex_x == 9) {
+	else if (frameIndex_x == 7) {
 		frameIndex_x = 1;
 		frameIndex_y = 1;
+	}
+
+	vec2 directions[3] = { {0.f, -1.f}, {1.f, 0.f}, {-1.f, 0.f} };
+	// sprite change
+	if (spotter_sprite_countdown < 0) {
+
+		//spotter_texture.~Texture();
+		//spotter_texture.load_from_file(path);
+
+		init();
+		direction = directions[spotter_sprite_switch - 1];
+		spotter_sprite_countdown = 1500.f;
 	}
 }
 
@@ -155,17 +167,7 @@ void Spotter::draw(const mat3 &projection)
 	glUniform3fv(color_uloc, 1, color);
 	glUniformMatrix3fv(projection_uloc, 1, GL_FALSE, (float *)&projection);
 
-	vec2 directions[3] =  {{0.f, -1.f}, {1.f, 0.f}, {-1.f, 0.f} };
-	// sprite change
-	if (spotter_sprite_countdown < 0) {
-
-		//spotter_texture.~Texture();
-		//spotter_texture.load_from_file(path);
-
-		init();
-		direction = directions[spotter_sprite_switch - 1];
-		spotter_sprite_countdown = 1500.f;
-	}
+	
 
 	// draw
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);

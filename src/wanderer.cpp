@@ -28,7 +28,7 @@ bool Wanderer::init(vector<vec2> path, Map& map, Char& player)
 	if (!wanderer_texture.is_valid())
 	{
 
-		if (!wanderer_texture.load_from_file(textures_path("wanderers/wanderers.png")))
+		if (!wanderer_texture.load_from_file(textures_path("wanderers/new_wanderers.png")))
 		{
 			fprintf(stderr, "Failed to load wanderer texture!\n");
 			return false;
@@ -40,8 +40,9 @@ bool Wanderer::init(vector<vec2> path, Map& map, Char& player)
 	const float th = spriteHeight / wanderer_texture.height;
 	const int numPerRow = wanderer_texture.width / spriteWidth;
 	const int numPerCol = wanderer_texture.height / spriteHeight;
-	const float tx = (frameIndex_x % numPerRow) * tw;
-	const float ty = (frameIndex_y / numPerCol) * th;
+	const float tx = (frameIndex_x % numPerRow - 1) * tw;
+	const float ty = (frameIndex_y % numPerCol) * th;
+
 
 	float posX = 0.f;
 	float posY = 0.f;
@@ -143,18 +144,30 @@ void Wanderer::update(float ms)
 	
 	// sprite change
 	if (sprite_countdown > 0.f)
-		sprite_countdown -= ms;
+	{
+		sprite_countdown -= ms * 2;
 
-	if (frameIndex_x == 1) {
-		frameIndex_x = 2;
+		if (frameIndex_x == 0) {
+			frameIndex_x = 1;
+		}
+		else if (frameIndex_x == 1) {
+			frameIndex_x = 2;
+			frameIndex_y = 10;
+		}
+		else if (frameIndex_x == 2) {
+			frameIndex_x = 0;
+			frameIndex_y = 11;
+
+		}
 	}
-	else if (frameIndex_x == 2) {
-		frameIndex_x = 7;
-		frameIndex_y = 0;
-	}
-	else if (frameIndex_x == 7) {
-		frameIndex_x = 1;
-		frameIndex_y = 1;
+
+	if (sprite_countdown < 0) {
+		//wanderer_texture.~Texture();
+		//wanderer_texture.load_from_file(path);
+
+		// reinitialize vertex positions
+		reinitiliaze();
+		sprite_countdown = 200.f;
 	}
 }
 
@@ -204,14 +217,7 @@ void Wanderer::draw(const mat3& projection)
 	glUniform3fv(color_uloc, 1, color);
 	glUniformMatrix3fv(projection_uloc, 1, GL_FALSE, (float*)& projection);
 
-	if (sprite_countdown < 0) {
-		//wanderer_texture.~Texture();
-		//wanderer_texture.load_from_file(path);
-
-		// reinitialize vertex positions
-		reinitiliaze();
-		sprite_countdown = 200.f;
-	}
+	
 
 	// draw
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
@@ -239,7 +245,7 @@ void Wanderer::set_wall_collision(char direction, bool value)
 
 vec2 Wanderer::get_bounding_box() const
 {
-	return { std::fabs(physics.scale.x) * wanderer_texture.width * 0.5f, std::fabs(physics.scale.y) * wanderer_texture.height * 0.5f };
+	return { std::fabs(physics.scale.x) * wanderer_texture.width * 0.5f *0.00175f, std::fabs(physics.scale.y) * wanderer_texture.height * 0.5f *0.24911032f };
 }
 
 void Wanderer::alert_wanderer_status(bool alert) 
@@ -417,7 +423,7 @@ void Wanderer::reinitiliaze()
 	const float th = spriteHeight / wanderer_texture.height;
 	const int numPerRow = wanderer_texture.width / spriteWidth;
 	const int numPerCol = wanderer_texture.height / spriteHeight;
-	const float tx = (frameIndex_x % numPerRow) * tw;
+	const float tx = (frameIndex_x % numPerRow - 1) * tw;
 	const float ty = (frameIndex_y / numPerCol) * th;
 
 	float posX = 0.f;
