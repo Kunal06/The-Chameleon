@@ -30,8 +30,9 @@ bool Char::init(vec2 spos)
 	const float tx = (frameIndex_x % numPerRow - 1) * tw;
 	const float ty = (frameIndex_y / numPerCol) * th;
 
-	float posX = 0.f;
+	float posX = 10.f;
 	float posY = 0.f;
+
 
 	TexturedVertex vertices[4];
 	vertices[0].position = { posX, posY, -0.0f };
@@ -514,7 +515,7 @@ void Char::reinitialize()
 	const float tx = (frameIndex_x % numPerRow - 1) * tw;
 	const float ty = (frameIndex_y / numPerCol) * th;
 
-	float posX = 0.f;
+	float posX = -15.5f;
 	float posY = 0.f;
 
 	TexturedVertex vertices[4];

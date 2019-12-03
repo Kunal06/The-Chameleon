@@ -21,7 +21,7 @@ class Char : public Entity
 
 private:
 	// config
-	const float config_scale = 0.2f;
+	const float config_scale = 0.3f;
 
 	bool m_is_alive;
 
@@ -50,8 +50,8 @@ private:
 	// animation
 	int sprite_switch = 1;
 	float sprite_countdown = 1500.f;
-	const float spriteWidth = 31.f;
-	const float spriteHeight = 67.f;
+	const float spriteWidth = 31;
+	const float spriteHeight = 67;
 	int frameIndex_x = 1;
 	int frameIndex_y = 1;
 	void reinitialize();
