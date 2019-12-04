@@ -47,7 +47,7 @@ bool Wanderer::init(vector<vec2> path, Map& map, Char& player)
 	float posX = 0.f;
 	float posY = 0.f;
 
-	TexturedVertex vertices[4];
+	/*TexturedVertex vertices[4];
 	vertices[0].position = { posX, posY, -0.0f };
 	vertices[0].texcoord = { tx, ty };
 	vertices[1].position = { posX + spriteWidth, posY, -0.0f };
@@ -55,6 +55,16 @@ bool Wanderer::init(vector<vec2> path, Map& map, Char& player)
 	vertices[2].position = { posX + spriteWidth, posY + spriteHeight, -0.0f };
 	vertices[2].texcoord = { tx + tw, ty + th };
 	vertices[3].position = { posX, posY + spriteHeight, -0.0f };
+	vertices[3].texcoord = { tx, ty + th };*/
+
+	TexturedVertex vertices[4];
+	vertices[0].position = { posX-spriteWidth/2, posY+spriteHeight/2, -0.0f };
+	vertices[0].texcoord = { tx, ty };
+	vertices[1].position = { posX+spriteWidth/2, posY+spriteHeight/2, -0.0f };
+	vertices[1].texcoord = { tx + tw, ty };
+	vertices[2].position = { posX + spriteWidth/2, posY + spriteHeight/2, -0.0f };
+	vertices[2].texcoord = { tx + tw, ty + th };
+	vertices[3].position = { posX-spriteWidth/2, posY - spriteHeight/2, -0.0f };
 	vertices[3].texcoord = { tx, ty + th };
 
 	// counterclockwise as it's the default opengl front winding direction
@@ -427,7 +437,7 @@ void Wanderer::reinitiliaze()
 	const float ty = (frameIndex_y / numPerCol) * th;
 
 	float posX = 0.f;
-	float posY = 0.f;
+	float posY = -35.f;
 
 	TexturedVertex vertices[4];
 	vertices[0].position = { posX, posY, -0.0f };

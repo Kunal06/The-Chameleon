@@ -32,7 +32,7 @@ bool Spotter::init()
 	const float ty = (frameIndex_y / numPerCol) * th;
 
 	float posX = 0.f;
-	float posY = 0.f;
+	float posY = -35.f;
 
 	TexturedVertex vertices[4];
 	vertices[0].position = { posX, posY, -0.0f };
