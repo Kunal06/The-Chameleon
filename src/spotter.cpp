@@ -54,12 +54,12 @@ bool Spotter::init()
 	// vertex buffer creation
 	glGenBuffers(1, &mesh.vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(TexturedVertex) * 4, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(TexturedVertex) * 4, vertices, GL_DYNAMIC_DRAW);
 
 	// index buffer creation
 	glGenBuffers(1, &mesh.ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * 6, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * 6, indices, GL_DYNAMIC_DRAW);
 
 	// vertex array (container for vertex + index buffer)
 	glGenVertexArrays(1, &mesh.vao);
@@ -93,26 +93,23 @@ void Spotter::update(float ms)
 	if (spotter_sprite_countdown > 0.f)
 		spotter_sprite_countdown -= ms;
 
-	/*frameIndex >= 3 ? frameIndex = 1 : frameIndex++;*/
-
-	if (frameIndex_x == 1) {
-		frameIndex_x = 2;
-	}
-	else if (frameIndex_x == 2) {
-		frameIndex_x = 7;
-		frameIndex_y = 0;
-	}
-	else if (frameIndex_x == 7) {
-		frameIndex_x = 1;
-		frameIndex_y = 1;
-	}
-
 	vec2 directions[3] = { {0.f, -1.f}, {1.f, 0.f}, {-1.f, 0.f} };
 	// sprite change
 	if (spotter_sprite_countdown < 0) {
 
-		//spotter_texture.~Texture();
-		//spotter_texture.load_from_file(path);
+		spotter_sprite_switch >= 3 ? spotter_sprite_switch = 1 : spotter_sprite_switch++;
+
+		if (frameIndex_x == 1) {
+			frameIndex_x = 2;
+		}
+		else if (frameIndex_x == 2) {
+			frameIndex_x = 7;
+			frameIndex_y = 0;
+		}
+		else if (frameIndex_x == 7) {
+			frameIndex_x = 1;
+			frameIndex_y = 1;
+		}
 
 		init();
 		direction = directions[spotter_sprite_switch - 1];
@@ -138,6 +135,7 @@ void Spotter::draw(const mat3 &projection)
 
 	// depth
 	glEnable(GL_DEPTH_TEST);
+
 
 	// get uniform locations for glUniform* calls
 	GLint transform_uloc = glGetUniformLocation(effect.program, "transform");
@@ -191,7 +189,7 @@ vec2 Spotter::get_bounding_box() const
 	return { std::fabs(physics.scale.x) * spotter_texture.width * 0.5f * 0.125f, std::fabs(physics.scale.y) * spotter_texture.height * 0.5f * 0.14285714285f };
 }
 
-bool Spotter::collision_with(Char m_char)
+bool Spotter::collision_with(Char m_char, Map& m)
 {
 	// using euclidean distance rn - FIX LATER
 
@@ -201,13 +199,17 @@ bool Spotter::collision_with(Char m_char)
 	bool in_direction = ((check_sgn(difference_in_x) == direction.x) && (check_sgn(difference_in_y) == direction.y));
 
 
+	bool is_wall = true;
+	if (((sqrt(pow(difference_in_x, 2) + pow(difference_in_y, 2))) <= radius) && (in_direction) && (m_char.is_moving())) {
+		is_wall = m.check_wall(motion.position, m_char.get_position());
+	}
 
-	if (((sqrt(pow(difference_in_x, 2) + pow(difference_in_y, 2))) <= radius) && in_direction) {
+	/*is_wall = m.check_wall(motion.position, m_char.get_position());*/
+
+	if (((sqrt(pow(difference_in_x, 2) + pow(difference_in_y, 2))) <= radius) && in_direction && !(is_wall)) {
 		return true;
 	}
 	else {
-		//printf("difference: %f\n", check_sgn(difference_in_x));
-		//printf("direction: %f\n", direction.x);
 		return false;
 	}
 }

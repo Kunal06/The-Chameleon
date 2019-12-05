@@ -454,7 +454,7 @@ bool World::update(float elapsed_ms)
 
 		// proximity, spotter
 		for (auto& spotter : m_spotters) {
-			if (spotter.collision_with(m_char) && is_char_detectable(m_map))
+			if (spotter.collision_with(m_char, m_map) && is_char_detectable(m_map))
 			{
 				if (m_char.is_alive())
 				{
@@ -624,7 +624,7 @@ bool World::update(float elapsed_ms)
 
 		// proximity, spotter
 		for (auto& spotter : m_spotters) {
-			if (spotter.collision_with(m_char) && is_char_detectable(m_map))
+			if (spotter.collision_with(m_char, m_map) && is_char_detectable(m_map))
 			{
 				if (m_char.is_alive())
 				{

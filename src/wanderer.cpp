@@ -154,9 +154,9 @@ void Wanderer::update(float ms)
 	
 	// sprite change
 	if (sprite_countdown > 0.f)
-	{
 		sprite_countdown -= ms * 2;
 
+	if (sprite_countdown < 0) {
 		if (frameIndex_x == 0) {
 			frameIndex_x = 1;
 		}
@@ -169,16 +169,12 @@ void Wanderer::update(float ms)
 			frameIndex_y = 11;
 
 		}
-	}
-
-	if (sprite_countdown < 0) {
-		//wanderer_texture.~Texture();
-		//wanderer_texture.load_from_file(path);
-
 		// reinitialize vertex positions
 		reinitiliaze();
 		sprite_countdown = 200.f;
 	}
+	// flip wanderers when moving right
+	(motion.speed < 0.f) ? physics.scale.x = -config_scale : physics.scale.x = config_scale;
 }
 
 void Wanderer::draw(const mat3& projection)

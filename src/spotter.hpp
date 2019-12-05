@@ -3,8 +3,10 @@
 // internal
 #include "common.hpp"
 #include "char.hpp"
+#include "map.hpp"
 
 class Char;
+class Map;
 
 // guard type 2 : spotter
 class Spotter : public Entity
@@ -32,9 +34,9 @@ private:
 public:
 	bool init();
 	void destroy();
-	void update(float ms);
+	void update(float m);
 	void draw(const mat3& projection) override;
-	bool collision_with(Char m_char);
+	bool collision_with(Char m_char, Map& m);
 
 	// movement
 	void set_position(vec2 position);

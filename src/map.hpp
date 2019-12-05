@@ -3,7 +3,9 @@
 // internal
 #include "char.hpp"
 #include "common.hpp"
+#include "spotter.hpp"
 class Char;
+class Spotter;
 
 // TO REMOVE - placeholder for randomize path wall collision
 #include "wanderer.hpp"
@@ -53,6 +55,9 @@ public:
 	void set_char_dead();
 
 	void reset_char_dead_time();
+	
+	// wall in between pos for spotter and char
+	bool check_wall(vec2 spotter_pos, vec2 char_pos);
 
 	float get_char_dead_time() const;
 
