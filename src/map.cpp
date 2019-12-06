@@ -836,7 +836,7 @@ bool Map::check_wall(vec2 spotter_pos, vec2 char_pos)
 	int cPosY = (int)char_pos.y / 20;
 
 
-	if ((sPosX < cPosX) && (sPosY < cPosY)) 
+	if ((sPosX < cPosX) && (sPosY < cPosY))
 	{
 
 		for (int posX = sPosX; posX <= cPosX; posX++)
@@ -847,7 +847,7 @@ bool Map::check_wall(vec2 spotter_pos, vec2 char_pos)
 			}
 		}
 	}
-	else if ((sPosX < cPosX) && (sPosY > cPosY)) 
+	else if ((sPosX < cPosX) && (sPosY > cPosY))
 	{
 		for (int posX = sPosX; posX <= cPosX; posX++)
 		{
@@ -877,6 +877,35 @@ bool Map::check_wall(vec2 spotter_pos, vec2 char_pos)
 			}
 		}
 	}
+	else if ((sPosX == cPosX) && (sPosY < cPosY))
+	{
+		for (int posY = sPosY; posY <= cPosY; posY++)
+		{
+			top_left = top_left || current_level[posY][sPosX] == 'W';
+		}
+	}
+	else if ((sPosX == cPosX) && (sPosY > cPosY))
+	{
+		for (int posY = sPosY; posY >= cPosY; posY--)
+			{
+				top_left = top_left || current_level[posY][sPosX] == 'W';
+			}
+	}
+	else if ((sPosX < cPosX) && (sPosY == cPosY))
+	{
+		for (int posX = sPosX; posX <= cPosY; posX++)
+		{
+			top_left = top_left || current_level[sPosY][posX] == 'W';
+		}
+	}
+	else if ((sPosX > cPosX) && (sPosY == cPosY))
+	{
+		for (int posX = sPosX; posX >= cPosX; posX--)
+		{
+			top_left = top_left || current_level[sPosY][posX] == 'W';
+		}
+	}
+
 
 	/*if (is_wall)
 		printf("wall collision works!\n");*/

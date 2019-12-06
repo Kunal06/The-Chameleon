@@ -186,7 +186,7 @@ vec2 Spotter::get_position() const
 vec2 Spotter::get_bounding_box() const
 {
 	// adjusted to fit sprite sheet changes
-	return { std::fabs(physics.scale.x) * spotter_texture.width * 0.5f * 0.125f, std::fabs(physics.scale.y) * spotter_texture.height * 0.5f * 0.14285714285f };
+	return { std::fabs(physics.scale.x) * spotter_texture.width * 0.5f * 0.00125f, std::fabs(physics.scale.y) * spotter_texture.height * 0.5f * 0.0014285714285f };
 }
 
 bool Spotter::collision_with(Char m_char, Map& m)
