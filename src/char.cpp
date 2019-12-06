@@ -149,24 +149,24 @@ void Char::update(float ms)
 		if (m_color == 3)
 		{
 			if (m_moving_up && !m_wall_down)
-				change_position({0.f, step});
+				change_position({ 0.f, step });
 			if (m_moving_down && !m_wall_up)
-				change_position({0.f, -step});
+				change_position({ 0.f, -step });
 			if (m_moving_left && !m_wall_right)
-				change_position({step, 0.f});
+				change_position({ step, 0.f });
 			if (m_moving_right && !m_wall_left)
-				change_position({-step, 0.f});
+				change_position({ -step, 0.f });
 		}
-		else 
+		else
 		{
 			if (m_moving_up && !m_wall_up)
-				change_position({0.f, -step});
+				change_position({ 0.f, -step });
 			if (m_moving_down && !m_wall_down)
-				change_position({0.f, step});
+				change_position({ 0.f, step });
 			if (m_moving_left && !m_wall_left)
-				change_position({-step, 0.f});
+				change_position({ -step, 0.f });
 			if (m_moving_right && !m_wall_right)
-				change_position({step, 0.f});
+				change_position({ step, 0.f });
 		}
 
 		if (m_moving_right)
@@ -175,31 +175,35 @@ void Char::update(float ms)
 				physics.scale.x = -physics.scale.x;
 			}
 		}
-		
-		if (m_moving_left) 
+
+		if (m_moving_left)
 		{
 			if (physics.scale.x > 0) {
 				physics.scale.x = -physics.scale.x;
 			}
 		}
 		// sprite change
-		/*if (sprite_countdown > 0.f)
-			sprite_countdown -= ms * 2;*/
 
-		if (m_moving_down || m_moving_up || m_moving_right || m_moving_left) {
-			if (frameIndex_x < 7) {
+
+		if (m_moving_down || m_moving_up || m_moving_right || m_moving_left)
+		{
+			if (frameIndex_x < 7)
+			{
 				frameIndex_x++;
 			}
-			else {
+			else
+			{
 				frameIndex_x = 2;
 			}
 			reinitialize();
 		}
-		else {
+		else
+		{
 			frameIndex_x = 1;
 			frameIndex_y = 1;
 			reinitialize();
 		}
+	
 
 		//if (sprite_countdown < 0) {
 		//	//wanderer_texture.~Texture();
@@ -484,6 +488,7 @@ void Char::set_dash(bool value)
 	if (!value)
 		m_moving_up = m_moving_down = m_moving_left = m_moving_right = value;
 }
+
 
 bool Char::is_dashing()
 {
