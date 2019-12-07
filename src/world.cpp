@@ -363,7 +363,7 @@ bool World::update(float ms)
 					if (shooter.bullets.cooldown < 0.f)
 					{
 						shooter.bullets.spawn_bullet(shooter.get_position(), angle);
-						shooter.bullets.cooldown = 1500.f;
+						shooter.bullets.cooldown = 550.f;
 					}
 				}
 				break;
@@ -455,6 +455,28 @@ bool World::update(float ms)
 					m_char.set_color(0);
 					m_cooldown = 0;
 					// m_char.change_position({15.f * cos(angle), 15.f * sin(angle)});
+							if ((angle >= -M_PI / 4) && (angle <= M_PI / 4))
+								{
+									m_char.change_direction(2);
+									m_char.set_direction('R', true);
+
+								}
+							else if ((angle > M_PI / 4) && (angle <= 3* M_PI / 4))
+								{
+									m_char.change_direction(1);
+									m_char.set_direction('D', true);
+								}
+							else if ((angle > 3 * M_PI / 4) || (angle <= 3 * -M_PI / 4))
+								{
+									m_char.change_direction(3);
+									m_char.set_direction('L', true);
+								}
+							else if ((angle > 3 * -M_PI / 4) && (angle < -M_PI/4))
+								{
+									m_char.change_direction(0);
+									m_char.set_direction('U', true);
+								}
+							m_char.set_dash(true);
 				}
 			}
 		}
