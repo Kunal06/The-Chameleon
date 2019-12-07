@@ -363,7 +363,7 @@ bool World::update(float ms)
 					if (shooter.bullets.cooldown < 0.f)
 					{
 						shooter.bullets.spawn_bullet(shooter.get_position(), angle);
-						shooter.bullets.cooldown = 550.f;
+						shooter.bullets.cooldown = 1500.f;
 					}
 				}
 				break;
